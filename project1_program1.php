@@ -12,13 +12,22 @@
     class Hockey extends stickLength implements Stick{
 
         public $length = 0;
+        public $productionState;
 
+        
+        function _construct($prodIn){
+            $this->setProduction($prodIn);
+        }
+        public function setProduction($prodIn){
+            $this->productionState = $prodIn;
+        }
+        public function getProduction(){
+            return $this->productionState;
+        }
         //returns the sticklength so it can be altered by my decorator class
         public function getStickLength(){
             return $this->length;
         }
-        
-
         public function createStick(){
             echo "Creating a hockey stick!";
         }
@@ -107,6 +116,39 @@
     echo $hStickTest->getStickLength();
     $lStickTest = new lacrosseStickDecorator(new Lacrosse());
     echo $lStickTest->getStickLength();
+
+
+    //it is my understanding that the memento class will save the current production state that 
+    //i set in my hockey class 
+    //it should also allow you to set the production as well
+    class hockeyProdMemento{
+        public $productionState;
+
+        function _construct(Hockey $hockey){
+            $this->setProduction($hockey);
+        }
+        public function setProduction(Hockey $hockey){
+            $this->productionState = $hockey->getProduction();
+        }
+        public function getProduction(Hockey $hockey){
+            $hockey->setProduction($this->productionState);
+        }
+    }
+
+    $h2 = new Hockey();
+    $h2->setProduction("shipped");
+
+    //upon testing I cannot figure out why I am not
+    //receiving any output for the memento variable
+    $hMemento = new hockeyProdMemento($h2);
+    $hMemento->setProduction("processing");
+    echo $hMemento->getProduction();
+
+
+
+
+ 
+
 
 
     
