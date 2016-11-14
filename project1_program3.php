@@ -12,9 +12,11 @@
         public function getStringValue(){
             echo "new string is being created";
         }
+       //calls the strategy interface
        public function setOutput(StringOutputInterface $outputType){
             $this->stringoutput = $outputType;
         }
+        //calls the function to load the output in the strategy interface
         public function loadOutput(){
             return $this->stringoutput->load();
         }
