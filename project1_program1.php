@@ -86,7 +86,7 @@
     //it is abstract because it does not actually call getSticklength() itself
     abstract class StickDecorator extends stickLength{
         protected $stickLength;
-        function _construct(stickLength $stickLength){
+        function __construct(stickLength $stickLength){
             $this->stickLength = $stickLength;
         }
     }
