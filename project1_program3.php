@@ -1,59 +1,83 @@
 <?php
 
-    
-    interface StringOutputter{
-        public function getStringValue();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+  class StringCreator{
+    private $someString;
+
+    public function __construct($someString){
+      $this->someString = $someString;
     }
-    //class to facilitate creation of strings
-    class StringCreator implements StringOutputter{
-        private $stringoutput;
-
-        //echos that a new string is being created
-        public function getStringValue(){
-            echo "new string is being created";
-        }
-       //calls the strategy interface
-       public function setOutput(StringOutputInterface $outputType){
-            $this->stringoutput = $outputType;
-        }
-        //calls the function to load the output in the strategy interface
-        public function loadOutput(){
-            return $this->stringoutput->load();
-        }
+    public function getString(){
+      return $this->someString;
     }
+  }
 
-    //factory that calls stringcreator to create new strings
-    class StringFactory{
-        public static function create(){
-            return new StringCreator();
-        }
+  class StringFactory{
+    public static function create($someString){
+      return new StringCreator($someString);
     }
+  }
 
-    $test = new StringFactory();//creates new string through the factory
-    echo $test->getStringValue();//shows a string factory object proving it was created
+  $test = StringFactory::create("hello world");
+  $test2 = StringFactory::create("TEST UPPER STRING");
+  //print_r($test->getString());
+  echo $test->getString();
+  echo $test2->getString();
 
-    //strategy interface that will load differenent variations of the string
-    interface StringOutputInterface{
-        public function load();
+  /**class StrategyContext{
+    private $strategy = NULL;
+
+    public function __construct($strategy_id){
+      switch($strategy_id){
+        case "U":
+          $this->strategy = new StrategyUpper();
+          break;
+        case "L":
+          $this->strategy = new StrategyLower();
+          break;
+        default:
+          echo 'Invalid Input';
+          break;
+      }
     }
-
-    //class that implements the interface to uppercase the entire string
-    class UpperCasedString implements StringOutputInterface{
-        public function load(){
-            return strtoupper($somestring);
-        }
+    public function showString($someString){
+      $this->strategy->showString($someString);
     }
-    //class that implements the interface to lowercase the entire string
-    class LowerCasedString implements StringOutputInterface{
-        public function load(){
-            return strtolower($somestring);
-        }
+  }**/
+
+  interface StrategyInterface{
+    public function showString($someString);
+  }
+
+  class StrategyUpper implements StrategyInterface{
+    public function showString($someString){
+      $stratString = $someString->getString();
+      return strtoupper($stratString);
     }
+  }
 
-    $test->setOutput(new UpperCasedString());
-    echo $test->loadOutput();**/
+  class StrategyLower implements StrategyInterface{
+    public function showString($someString){
+      $stratString = $someString->getString();
+      return strtolower($stratString);
+    }
+  }
 
-    
+  $stratU = new StrategyUpper();
+  echo $stratU->showString($test);
+
+  $stratL = new StrategyLower();
+  echo $stratL->showString($test2);
+
+  echo 'Done';
+
+
+
+
+
+
 
 
 ?>
