@@ -3,13 +3,16 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-  class StringCreator{
+  class StringCreator extends stringAlterer{
     private $someString;
 
     public function __construct($someString){
       $this->someString = $someString;
     }
     public function getString(){
+      return $this->someString;
+    }
+    public function getNewString(){
       return $this->someString;
     }
   }
@@ -70,8 +73,35 @@ ini_set('display_errors', 1);
 
   $stratL = new StrategyLower();
   echo $stratL->showString($test2);
+  //$test2Storage = $stratL->showString($test2);
 
   echo 'Done';
+
+  abstract class stringAlterer{
+    abstract function getNewString();
+  }
+
+  abstract class stringDecorator extends stringAlterer{
+    protected $stringAlterer;
+    function __construct(stringAlterer $stringAlterer){
+      $this->stringAlterer = $stringAlterer;
+    }
+  }
+
+  class upperStringDecorator extends stringDecorator{
+    function getNewString(){
+      return $this->stringAlterer->getNewString(). " :This upper cased string has been decorated";
+    }
+  }
+
+  class lowerStringDecorator extends stringDecorator{
+    function getNewString(){
+      return $this->stringAlterer->getNewString(). " :This lower cased string has been decorated";
+    }
+  }
+
+  $sDecTest = new upperStringDecorator($test2);
+  echo $sDecTest->getNewString();
 
 
 
