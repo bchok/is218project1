@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
   //this is the concrete class that the factory utlizes to create some random strings
   //it implements my string decorater to append a string to the end of the user string
   class StringCreator extends stringAlterer{
@@ -32,7 +29,9 @@ ini_set('display_errors', 1);
   //test values to the factory pattern
   $test = StringFactory::create("hello world");
   $test2 = StringFactory::create("TEST UPPER STRING");
+  echo 'This shows that a string was created with my factory<br>';
   echo $test->getString(); //outputs the string for test
+  echo '<br><br>This shows that a second string was created by my factory pattern<br>';
   echo $test2->getString(); //outputs the string for test2
 
   //this was another part of the program I tried to create to allow me to choose a strategy
@@ -86,8 +85,10 @@ ini_set('display_errors', 1);
 
   //test values for the strategy
   $stratU = new StrategyUpper(); //creates new strategy
+  echo '<br><br>This shows that a new string is created with my factory object based on the strategy it is passed through<br>';
   echo $stratU->showString($test); //takes factory object and alters it based on the strategy
   $stratL = new StrategyLower(); //crates new strategy
+  echo '<br><br> This shows that another new string is created based on the strategy that the factory object is passed through<br>';
   echo $stratL->showString($test2); //takes factory object and alters it based on the strategy
 
 
@@ -115,12 +116,13 @@ ini_set('display_errors', 1);
   //decorator class taht appends a string to the end of the lowercased string
   class lowerStringDecorator extends stringDecorator{
     function getNewString(){
-      return $this->stringAlterer->getNewString(). " :This lower cased string has been decorated";
+      return $this->stringAlterer->getNewString(). " : This lower cased string has been decorated";
     }
   }
 
   //test values for the decorator passing a string object through
   $sDecTest = new lowerStringDecorator($test); //takes string object and passes it through the decorator
+  echo '<br><br>This shows that the string that is created by the factory can be decorated and altered<br>';
   echo $sDecTest->getNewString(); //outputs the decorated string
 
 
