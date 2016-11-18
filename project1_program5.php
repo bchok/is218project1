@@ -2,6 +2,22 @@
   error_reporting(E_ALL);
   ini_set('display_errors', 1);
 
+  interface CreateNewTax{
+    public function createTax();
+  }
+  class TaxFactory{
+      public static function create($type){
+          if($type == "USD"){
+              return new USD(0.07);
+          }
+          if($type == "CAD"){
+              return new CAD(0.05);
+          }
+      }
+  }
+
+
+
   interface Observer{
     public function addTax(Taxes $tax);
   }
@@ -45,6 +61,9 @@
     public function getTax(){
       return f_rand(0.07, 0.09);
     }
+    public function createTax(){
+        echo "Creating new USD tax!";
+    }
   }
 
   class CAD implements Taxes{
@@ -63,6 +82,9 @@
     public function getTax(){
       return f_rand(0.05, 0.07);
     }
+    public function createTax(){
+        echo "Creating new CAD tax!";
+    }
   }
 
   function f_rand($min=0,$max=1,$mul=1000000){
@@ -73,14 +95,15 @@
     }
   }
 
+  $usd = TaxFactory::create("USD");
+  $cad = TaxFactory::create("CAD");
   $taxCalculator = new TaxCalculator();
+  //$tax1 = new USD(0.07);
+  //$tax2 = new CAD(0.05);
 
-  $tax1 = new USD(0.07);
-  $tax2 = new CAD(0.05);
-
-  $taxCalculator->addTax($tax1);
+  $taxCalculator->addTax($usd);
   echo $taxCalculator->updateTax();
-  $taxCalculator->addTax($tax2);
+  $taxCalculator->addTax($cad);
   echo $taxCalculator->updateTax();
 
 
