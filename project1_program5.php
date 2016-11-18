@@ -47,6 +47,7 @@
 
   class USD implements Taxes{
     private $tax;
+    public $taxStatus;
 
     public function __construct($tax){
       $this->tax = $tax;
@@ -55,7 +56,7 @@
 
     public function update(){
       $this->tax = $this->getTax();
-      echo "The new tax in the USA is: ". $this->tax ."as of today.";
+      echo "The new tax in the USA is: ". $this->tax ." as of today.";
     }
 
     public function getTax(){
@@ -63,6 +64,12 @@
     }
     public function createTax(){
         echo "Creating new USD tax!";
+    }
+    public function setTaxStatus($statusIn){
+      $this->taxStatus = $statusIn;
+    }
+    public function getTaxStatus(){
+      return $this->taxStatus;
     }
   }
 
@@ -76,7 +83,7 @@
 
     public function update(){
       $this->tax = $this->getTax();
-      echo "The new tax in Canada is: ". $this->tax ."as of today.";
+      echo "The new tax in Canada is: ". $this->tax ." as of today.";
     }
 
     public function getTax(){
@@ -98,13 +105,33 @@
   $usd = TaxFactory::create("USD");
   $cad = TaxFactory::create("CAD");
   $taxCalculator = new TaxCalculator();
-  //$tax1 = new USD(0.07);
-  //$tax2 = new CAD(0.05);
 
   $taxCalculator->addTax($usd);
   echo $taxCalculator->updateTax();
   $taxCalculator->addTax($cad);
   echo $taxCalculator->updateTax();
+
+  class USDTaxValueMemento{
+      public $taxStatus;
+
+      function __construct(USD $usd){
+          $this->setTaxStatus($usd);
+      }
+
+      public function setTaxStatus(USD $usd){
+          $this->taxStatus = $usd->getTaxStatus();
+      }
+
+      public function getTaxValue(USD $usd){
+          $usd->setTaxStatus($this->taxStatus);
+
+      }
+  }
+
+  $usd2 = new USD(0.07);
+  $usd2->setTaxStatus("current");
+  $taxMemento = new USDTaxValueMemento($usd2);
+  echo $taxMemento->taxStatus;
 
 
 
