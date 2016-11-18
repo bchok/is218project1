@@ -14,7 +14,7 @@
     abstract function getEmail();
   }
 
-  class EmailBody{
+  class EmailBody extends EmailBodyChanger{
     private $bodyText = NULL;
 
     function __construct(){
@@ -26,6 +26,9 @@
 
     function setBody($bodyText){
       $this->bodyText = $bodyText;
+    }
+    function alterEmailBody(){
+      return $this->bodyText;
     }
   }
 
@@ -65,5 +68,25 @@
   $emailDirector->buildEmail();
   $email = $emailDirector->getEmail();
   echo $email->showBody();
+
+  abstract class EmailBodyChanger{
+    abstract function alterEmailBody();
+  }
+
+  abstract class EmailBodyDecorator extends EmailBodyChanger{
+    protected $emailBodyChanger;
+    function __construct(EmailBodyChanger $emailBodyChanger){
+      $this->emailBodyChanger = $emailBodyChanger;
+    }
+  }
+  class WelcomeEmailDecorator extends EmailBodyDecorator{
+    function alterEmailBody(){
+      return $this->emailBodyChanger->showBody(). "<br><br> Welcome to the Mailing List!<br>";
+    }
+  }
+
+  $emailDecTest = new WelcomeEmailDecorator($email);
+  //print_r($emailDecTest);
+  echo $emailDecTest->alterEmailBody();
 
  ?>
