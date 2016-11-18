@@ -1,8 +1,5 @@
 <?php
 
-  error_reporting(E_ALL);
-  ini_set('display_errors', 1);
-
   //abstract builder class to build emails
   //this is required for the builder pattern
   abstract class AbstractEmailBuilder{
@@ -92,6 +89,7 @@
   $emailDirector = new EmailDirector($emailBuilder);
   $emailDirector->buildEmail();
   $email = $emailDirector->getEmail();
+  echo '<br> This shows the the builder pattern has created an emailbody object with it<br>';
   echo $email->showBody();
 
   //abstract class for the decorator pattern
@@ -114,12 +112,13 @@
   //it then appends welcome to the mailing list at the end
   class WelcomeEmailDecorator extends EmailBodyDecorator{
     function alterEmailBody(){
-      return $this->emailBodyChanger->showBody(). "<br><br> Welcome to the Mailing List!<br>";
+      return $this->emailBodyChanger->showBody(). "<br>Welcome to the Mailing List!<br>";
     }
   }
 
   //test values to prove the decorator works
   $emailDecTest = new WelcomeEmailDecorator($email);
+  echo '<br><br> This shows the the email body has been altered by my decorator pattern<br>';
   echo $emailDecTest->alterEmailBody();
 
   //memento that saves the state of the email
@@ -147,6 +146,7 @@
   $email2->setEmailStatus("sent to address");
 
   $emailMemento = new EmailStatusMemento($email2);
+  echo '<br><br> This shows the the email body object was passed through my memento with its status stored<br>';
   echo $emailMemento->emailStatus;
 
  ?>
