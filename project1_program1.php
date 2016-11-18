@@ -70,9 +70,11 @@
 
     //these take the stick object and create both a hockey and larosse stick from it and echo output to show its being created
     $hockeyStick = $factory->create("Hockey");
+    echo 'This proves a new hockey object was created by my factory<br>';
     echo $hockeyStick->createStick();
 
     $lacrosseStick = $factory->create("Lacrosse");
+    echo '<br><br> This proves that a new lacrosse object was created by my factory<br>';
     echo $lacrosseStick->createStick();
 
 
@@ -113,8 +115,10 @@
     //each object creates a new decorator object while
     //creating the original through the stickFactory
     $hStickTest = new hockeyStickDecorator(new Hockey());
+    echo '<br><br> This proves that the sticklength of the hockey object was altered by my decorator<br>';
     echo $hStickTest->getStickLength();
     $lStickTest = new lacrosseStickDecorator(new Lacrosse());
+    echo '<br><br> This proves that the sticklength of the lacrosse object was altered by my decorator<br>';
     echo $lStickTest->getStickLength();
 
 
@@ -144,7 +148,9 @@
     //these are test objects to create the memento
     //it should store the productionstate of h2 into the memnto
     $hMemento = new hockeyProdMemento($h2); //stores the production state in the memento
+    echo '<br><br> This proves that a memento object was created by passing a hockey object through it<br>';
     print_r($hMemento);//proves that the memento object was created and contains the production state of the hockey object above h2
+    echo '<br><br> This just shows output from that hockey object by calling the memento<br>';
     echo $hMemento->productionState; //echos the production state that is stored in the memento to prove that it works
 
 
